@@ -1,0 +1,60 @@
+{"query": "What is the capital of Japan?", "tier": "small"}
+{"query": "Who wrote Pride and Prejudice?", "tier": "small"}
+{"query": "Define photosynthesis in one sentence.", "tier": "small"}
+{"query": "Translate \"good morning\" into Spanish.", "tier": "small"}
+{"query": "What are your support hours?", "tier": "small", "context_chars": 900}
+{"query": "How do I reset my password?", "tier": "small", "context_chars": 1200}
+{"query": "What is the refund policy for premium plans?", "tier": "small", "context_chars": 1500}
+{"query": "List the days of the week.", "tier": "small"}
+{"query": "What does HTTP stand for?", "tier": "small"}
+{"query": "Convert 5 kilometers to miles.", "tier": "small"}
+{"query": "Summarize this sentence: The meeting is moved to Friday at 3pm.", "tier": "small"}
+{"query": "Fix the grammar: \"She don't like apples.\"", "tier": "small"}
+{"query": "What year did World War II end?", "tier": "small"}
+{"query": "Write a Python function to reverse a string.", "tier": "small"}
+{"query": "How do I create a new git branch?", "tier": "small"}
+{"query": "What is the file size limit for uploads?", "tier": "small", "context_chars": 1000}
+{"query": "Is the Pro plan available in Canada?", "tier": "small", "context_chars": 1100}
+{"query": "Give me a synonym for \"happy\".", "tier": "small"}
+{"query": "What is the boiling point of water in Fahrenheit?", "tier": "small"}
+{"query": "How many calories are in an apple?", "tier": "small"}
+{"query": "What is a REST API?", "tier": "small"}
+{"query": "Which port does HTTPS use by default?", "tier": "small"}
+{"query": "Write a SQL query to select all rows from the users table.", "tier": "small"}
+{"query": "Thanks, that helps!", "tier": "small"}
+{"query": "What is the default timeout for the API?", "tier": "small", "context_chars": 1400}
+{"query": "Rewrite this politely: send me the report now.", "tier": "small"}
+{"query": "What is the difference between a list and a tuple in Python?", "tier": "small"}
+{"query": "How do I enable two-factor authentication?", "tier": "small", "context_chars": 1300}
+{"query": "What is the capital of Australia?", "tier": "small"}
+{"query": "Name three primary colors.", "tier": "small"}
+{"query": "Design a scalable architecture for a multi-tenant SaaS platform and explain the trade-offs between a shared database and database-per-tenant.", "tier": "large"}
+{"query": "Compare the pros and cons of microservices versus a monolith for a team of five engineers, and recommend one with justification.", "tier": "large"}
+{"query": "Prove that the square root of 2 is irrational.", "tier": "large"}
+{"query": "Solve the integral of x^2 sin(x) dx and show each step.", "tier": "large"}
+{"query": "My FastAPI endpoint returns a 500 error when the request body contains nested JSON and the Pydantic validator raises an exception only under concurrent load. How do I find the root cause?", "tier": "large"}
+{"query": "Analyze the following contract clause and explain the legal risks for the supplier, then suggest alternative wording.", "tier": "large", "context_chars": 3000}
+{"query": "Write a Python implementation of an LRU cache with O(1) get and put, including type hints and unit tests.", "tier": "large"}
+{"query": "Given these three retrieved passages, reconcile the conflicting figures about Q3 revenue and explain which source is more reliable.", "tier": "large", "context_chars": 6000}
+{"query": "Debug this function that merges overlapping intervals: it throws an exception for nested intervals and returns wrong results for adjacent ones.", "tier": "large"}
+{"query": "Explain why the CAP theorem implies we cannot have both consistency and availability during a partition, and how Cassandra and Spanner make different trade-offs.", "tier": "large"}
+{"query": "Derive the gradient of the cross-entropy loss with respect to the logits of a softmax layer.", "tier": "large"}
+{"query": "Plan a migration from MySQL to PostgreSQL with zero downtime, listing the risks and rollback steps.", "tier": "large"}
+{"query": "Write an in-depth comparison of transformer and state-space models for long-context tasks, covering efficiency, accuracy, and open problems.", "tier": "large"}
+{"query": "Given the attached 20-page policy document, identify every clause that conflicts with GDPR and explain why.", "tier": "large", "context_chars": 12000}
+{"query": "Refactor this class to follow SOLID principles and explain each change you make.", "tier": "large"}
+{"query": "What are the security implications of storing JWTs in localStorage versus HttpOnly cookies, and how would you mitigate them?", "tier": "large"}
+{"query": "Estimate the monthly infrastructure cost of serving 10 million requests per day and justify your assumptions.", "tier": "large"}
+{"query": "Walk me through how gradient descent escapes saddle points and why momentum helps.", "tier": "large"}
+{"query": "Critique my thesis statement and suggest three ways to make the argument stronger: \"Social media has changed society.\"", "tier": "large"}
+{"query": "A customer says their invoice shows two charges, but the retrieved billing logs show one charge and one refund. Reconcile this and draft a response explaining what happened.", "tier": "large", "context_chars": 5000}
+{"query": "Write a Rust function that parses a CSV file in parallel using rayon and handles malformed rows without panicking.", "tier": "large"}
+{"query": "Compare BM25, dense retrieval, and hybrid search for RAG, then design an evaluation plan with metrics.", "tier": "large"}
+{"query": "Why does my Docker container exit immediately with code 137 and how can I prevent it in Kubernetes?", "tier": "large"}
+{"query": "Explain the difference between optimistic and pessimistic locking, then show how to implement each in PostgreSQL with an example.", "tier": "large"}
+{"query": "Summarize the key arguments in these five research papers and identify where they disagree.", "tier": "large", "context_chars": 30000}
+{"query": "Given the quarterly figures in the table above, calculate year-over-year growth for each segment and explain which segment underperformed relative to plan.", "tier": "large", "context_chars": 4000}
+{"query": "Design a rate limiter that supports burst traffic and per-user quotas, explain the algorithm choice, and write the code.", "tier": "large"}
+{"query": "Argue for and against banning social media for children under 16 and explain which position is stronger.", "tier": "large"}
+{"query": "Optimize this SQL query that joins five tables and takes 40 seconds, and explain the execution plan and suggest indexes.", "tier": "large"}
+{"query": "Outline a go-to-market strategy for a developer tool, including pricing tiers, target segments, and the risks of each channel.", "tier": "large"}
