@@ -45,13 +45,18 @@ class Settings(BaseSettings):
     # --- routing ---
     # Queries scoring >= router_threshold go to the large model.
     router_threshold: float = Field(0.30, ge=0.0, le=1.0)
-    # Max amount the threshold is raised under full budget pressure (see Router).
+    # Max amount the threshold is raised under full budget pressure, see Router.
     router_pressure_weight: float = Field(0.20, ge=0.0, le=1.0)
+
+    # --- cost budget ---
+    # cost_pressure = spend in the last budget_window_s divided by budget_usd, clamped to [0, 1].
+    budget_usd: float = Field(1.0, gt=0)
+    budget_window_s: int = Field(3600, gt=0)
 
     # --- storage ---
     db_path: Path = Path("data/routewise.db")
 
-    # --- pricing (USD per 1M tokens), approximate Groq list prices ---
+    # --- pricing, USD per 1M tokens, approximate Groq list prices ---
     # Verify at console.groq.com. Used for cost tracking and savings estimates.
     small_price_in: float = 0.075
     small_price_out: float = 0.30
