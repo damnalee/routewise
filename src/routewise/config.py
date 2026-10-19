@@ -28,7 +28,7 @@ class Settings(BaseSettings):
 
     # --- embeddings + semantic cache ---
     embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2"
-    cache_similarity_threshold: float = Field(0.90, ge=0.0, le=1.0)
+    cache_similarity_threshold: float = Field(0.85, ge=0.0, le=1.0)
     cache_ttl_s: int = Field(86_400, gt=0)
     cache_max_entries: int = Field(10_000, gt=0)
 

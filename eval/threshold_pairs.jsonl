@@ -1,0 +1,33 @@
+{"a": "How can I reset my password?", "b": "What's the way to reset my password?", "same": true}
+{"a": "What is the capital of France?", "b": "Which city is the capital of France?", "same": true}
+{"a": "How do I convert Celsius to Fahrenheit?", "b": "What is the formula to change Celsius into Fahrenheit?", "same": true}
+{"a": "Explain how a stack works", "b": "Can you explain how stacks work?", "same": true}
+{"a": "What is the time complexity of quicksort?", "b": "How fast is quicksort in big-O terms?", "same": true}
+{"a": "How do I install Python on Mac?", "b": "What are the steps to install Python on macOS?", "same": true}
+{"a": "Who wrote Hamlet?", "b": "Who is the author of Hamlet?", "same": true}
+{"a": "How do I delete a git branch?", "b": "What command removes a git branch?", "same": true}
+{"a": "What is the refund policy for premium plans?", "b": "How do refunds work for premium plans?", "same": true}
+{"a": "How many calories are in an apple?", "b": "What is the calorie count of one apple?", "same": true}
+{"a": "Write a Python function to sort a list", "b": "Give me a Python function that sorts a list", "same": true}
+{"a": "What are the symptoms of the flu?", "b": "Which symptoms does influenza cause?", "same": true}
+{"a": "How do I enable dark mode on iPhone?", "b": "Steps to turn on dark mode on an iPhone", "same": true}
+{"a": "What is semantic caching?", "b": "Can you explain what semantic caching is?", "same": true}
+{"a": "Summarize the plot of Inception", "b": "Give me a short summary of Inception's story", "same": true}
+{"a": "How do I reset my password?", "b": "How do I reset my router?", "same": false}
+{"a": "What is the capital of France?", "b": "What is the capital of Germany?", "same": false}
+{"a": "How do I convert Celsius to Fahrenheit?", "b": "How do I convert Fahrenheit to Celsius?", "same": false}
+{"a": "Explain how a stack works", "b": "Explain how a queue works", "same": false}
+{"a": "What is the time complexity of quicksort?", "b": "What is the time complexity of mergesort?", "same": false}
+{"a": "How do I install Python on Mac?", "b": "How do I install Python on Windows?", "same": false}
+{"a": "Who wrote Hamlet?", "b": "Who wrote Macbeth?", "same": false}
+{"a": "What is the difference between TCP and UDP?", "b": "What is the difference between HTTP and HTTPS?", "same": false}
+{"a": "How do I delete a git branch?", "b": "How do I create a git branch?", "same": false}
+{"a": "Summarize the plot of Inception", "b": "Summarize the plot of Interstellar", "same": false}
+{"a": "What is the refund policy for premium plans?", "b": "What is the cancellation policy for premium plans?", "same": false}
+{"a": "How many calories are in an apple?", "b": "How many calories are in a banana?", "same": false}
+{"a": "Write a Python function to sort a list", "b": "Write a Python function to reverse a list", "same": false}
+{"a": "What are the symptoms of the flu?", "b": "What are the symptoms of a cold?", "same": false}
+{"a": "How do I enable dark mode on iPhone?", "b": "How do I enable dark mode on Android?", "same": false}
+{"a": "What is the capital of France?", "b": "Best way to learn guitar fast", "same": false}
+{"a": "How do I reset my password?", "b": "Recipe for chocolate chip cookies", "same": false}
+{"a": "Explain how a stack works", "b": "Who won the 2018 World Cup?", "same": false}
