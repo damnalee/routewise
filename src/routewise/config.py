@@ -20,11 +20,21 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
     log_json: bool = False
 
-    # --- LLM provider (Ollama by default) ---
-    llm_base_url: str = "http://localhost:11434"
-    small_model: str = "llama3.2:3b"
-    large_model: str = "qwen2.5:7b"
+    # --- LLM provider ---
+    llm_provider: Literal["ollama", "groq"] = "groq"
+    small_model: str = "openai/gpt-oss-20b"
+    large_model: str = "openai/gpt-oss-120b"
     request_timeout_s: float = Field(60.0, gt=0)
+    llm_max_retries: int = Field(2, ge=0, le=10)
+    llm_retry_backoff_s: float = Field(0.5, ge=0)
+
+    # Ollama (local)
+    llm_base_url: str = "http://localhost:11434"
+
+    # Groq (hosted). Comma-separated keys, rotated round-robin with failover on 429.
+    groq_api_keys: str = ""
+    groq_base_url: str = "https://api.groq.com/openai/v1"
+    groq_reasoning_effort: Literal["low", "medium", "high"] = "low"
 
     # --- embeddings + semantic cache ---
     embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2"
@@ -41,13 +51,16 @@ class Settings(BaseSettings):
     # --- storage ---
     db_path: Path = Path("data/routewise.db")
 
-    # --- reference pricing (USD per 1M tokens) ---
-    # Local models are free, so we price them like comparable hosted tiers
-    # to make the cost-savings numbers meaningful.
-    small_price_in: float = 0.15
-    small_price_out: float = 0.60
-    large_price_in: float = 2.50
-    large_price_out: float = 10.00
+    # --- pricing (USD per 1M tokens), approximate Groq list prices ---
+    # Verify at console.groq.com. Used for cost tracking and savings estimates.
+    small_price_in: float = 0.075
+    small_price_out: float = 0.30
+    large_price_in: float = 0.15
+    large_price_out: float = 0.60
+
+    @property
+    def groq_keys(self) -> list[str]:
+        return [k.strip() for k in self.groq_api_keys.split(",") if k.strip()]
 
 
 @lru_cache
