@@ -20,6 +20,12 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
     log_json: bool = False
 
+    # --- gateway ---
+    # If set, /v1/* endpoints require this key via "Authorization: Bearer <key>" or "X-API-Key".
+    gateway_api_key: str = ""
+    # Store a short preview of each query in the metrics DB. Turn off for sensitive data.
+    store_queries: bool = True
+
     # --- LLM provider ---
     llm_provider: Literal["ollama", "groq"] = "groq"
     small_model: str = "openai/gpt-oss-20b"
