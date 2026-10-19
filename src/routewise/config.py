@@ -32,6 +32,12 @@ class Settings(BaseSettings):
     cache_ttl_s: int = Field(86_400, gt=0)
     cache_max_entries: int = Field(10_000, gt=0)
 
+    # --- routing ---
+    # Queries scoring >= router_threshold go to the large model.
+    router_threshold: float = Field(0.30, ge=0.0, le=1.0)
+    # Max amount the threshold is raised under full budget pressure (see Router).
+    router_pressure_weight: float = Field(0.20, ge=0.0, le=1.0)
+
     # --- storage ---
     db_path: Path = Path("data/routewise.db")
 
