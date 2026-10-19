@@ -3,12 +3,18 @@
 `Embedder` is the interface the rest of the system depends on. Production uses
 `SentenceTransformerEmbedder`; tests use `HashEmbedder`, which is deterministic,
 instant, and needs no model download.
+
+Thread safety: the gateway calls `aembed` through asyncio.to_thread, so several requests can
+reach the model from different threads at once. PyTorch models are not safe for that (on
+Apple MPS it corrupted memory and killed the process), so `SentenceTransformerEmbedder`
+serialises every encode call behind a lock.
 """
 
 from __future__ import annotations
 
 import asyncio
 import hashlib
+import os
 import re
 import threading
 from abc import ABC, abstractmethod
@@ -50,22 +56,33 @@ class Embedder(ABC):
 
 
 class SentenceTransformerEmbedder(Embedder):
-    """Local sentence-transformers model. Lazy-loaded, uses Apple MPS when available."""
+    """Local sentence-transformers model. Lazy-loaded, encode calls are serialised."""
 
-    def __init__(self, model_name: str, batch_size: int = 32) -> None:
+    def __init__(self, model_name: str, batch_size: int = 32, device: str = "cpu") -> None:
+        if device not in ("auto", "cpu", "mps"):
+            raise ValueError("device must be 'auto', 'cpu' or 'mps'")
         self._model_name = model_name
         self._batch_size = batch_size
+        self._device = device
         self._model = None  # type: ignore[var-annotated]
-        self._lock = threading.Lock()
+        self._load_lock = threading.Lock()
+        self._encode_lock = threading.Lock()
+
+    def _resolve_device(self) -> str:
+        if self._device != "auto":
+            return self._device
+        import torch
+
+        return "mps" if torch.backends.mps.is_available() else "cpu"
 
     def _load(self):  # type: ignore[no-untyped-def]
         if self._model is None:
-            with self._lock:
+            with self._load_lock:
                 if self._model is None:
-                    import torch
+                    os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
                     from sentence_transformers import SentenceTransformer
 
-                    device = "mps" if torch.backends.mps.is_available() else "cpu"
+                    device = self._resolve_device()
                     log.info("embedder.loading", model=self._model_name, device=device)
                     self._model = SentenceTransformer(self._model_name, device=device)
         return self._model
@@ -75,15 +92,17 @@ class SentenceTransformerEmbedder(Embedder):
         return int(self._load().get_sentence_embedding_dimension())
 
     def embed(self, texts: Sequence[str]) -> FloatArray:
+        model = self._load()
         if not texts:
             return np.zeros((0, self.dim), dtype=np.float32)
-        vectors = self._load().encode(
-            list(texts),
-            batch_size=self._batch_size,
-            convert_to_numpy=True,
-            normalize_embeddings=True,
-            show_progress_bar=False,
-        )
+        with self._encode_lock:
+            vectors = model.encode(
+                list(texts),
+                batch_size=self._batch_size,
+                convert_to_numpy=True,
+                normalize_embeddings=True,
+                show_progress_bar=False,
+            )
         return np.asarray(vectors, dtype=np.float32)
 
 

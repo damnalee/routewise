@@ -106,7 +106,7 @@ class Gateway:
     @classmethod
     def build(cls, settings: Settings) -> Gateway:
         """Wire the production components from settings."""
-        embedder = SentenceTransformerEmbedder(settings.embedding_model)
+        embedder = SentenceTransformerEmbedder(settings.embedding_model, device=settings.embedding_device)
         cache = SemanticCache(
             dim=embedder.dim,  # loads the embedding model once, at startup
             threshold=settings.cache_similarity_threshold,
