@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 440" width="1000" height="440" role="img" aria-labelledby="t d">
+  <title id="t">RouteWise architecture</title>
+  <desc id="d">A question goes to the semantic cache. A hit returns instantly. A miss goes to the router, which sends easy questions to the small model and hard ones to the large model. Every answer is returned and recorded.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#495057"/>
+    </marker>
+  </defs>
+  <style>
+    text { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; }
+    .t { font-size: 15px; font-weight: 700; fill: #212529; }
+    .s { font-size: 12px; fill: #495057; }
+    .l { font-size: 12px; font-weight: 700; }
+    .n { font-size: 11px; fill: #868e96; }
+  </style>
+
+  <rect x="1" y="1" width="998" height="438" rx="16" fill="#ffffff" stroke="#dee2e6"/>
+
+  <rect x="20" y="170" width="130" height="70" rx="14" fill="#f1f3f5" stroke="#adb5bd" stroke-width="2"/>
+  <text x="85" y="202" text-anchor="middle" class="t">Your RAG app</text>
+  <text x="85" y="222" text-anchor="middle" class="s">sends a question</text>
+
+  <rect x="200" y="170" width="170" height="70" rx="14" fill="#e7f5ff" stroke="#339af0" stroke-width="2"/>
+  <text x="285" y="202" text-anchor="middle" class="t">1. Semantic cache</text>
+  <text x="285" y="222" text-anchor="middle" class="s">seen it before?</text>
+
+  <rect x="470" y="40" width="200" height="70" rx="14" fill="#ebfbee" stroke="#40c057" stroke-width="2"/>
+  <text x="570" y="72" text-anchor="middle" class="t">Cache hit</text>
+  <text x="570" y="92" text-anchor="middle" class="s">~10 ms, costs $0</text>
+
+  <rect x="470" y="170" width="200" height="70" rx="14" fill="#fff9db" stroke="#fab005" stroke-width="2"/>
+  <text x="570" y="202" text-anchor="middle" class="t">2. Router</text>
+  <text x="570" y="222" text-anchor="middle" class="s">how hard is it?</text>
+
+  <rect x="740" y="130" width="190" height="60" rx="14" fill="#edf2ff" stroke="#5c7cfa" stroke-width="2"/>
+  <text x="835" y="157" text-anchor="middle" class="t">Small model</text>
+  <text x="835" y="176" text-anchor="middle" class="s">gpt-oss-20b, ~1.2 s</text>
+
+  <rect x="740" y="230" width="190" height="60" rx="14" fill="#fff4e6" stroke="#fd7e14" stroke-width="2"/>
+  <text x="835" y="257" text-anchor="middle" class="t">Large model</text>
+  <text x="835" y="276" text-anchor="middle" class="s">gpt-oss-120b, ~4.4 s</text>
+
+  <rect x="200" y="345" width="730" height="60" rx="14" fill="#f8f9fa" stroke="#ced4da" stroke-width="2"/>
+  <text x="565" y="372" text-anchor="middle" class="t">3. Answer goes back to your app and is recorded</text>
+  <text x="565" y="392" text-anchor="middle" class="s">tokens, cost, latency  →  SQLite  →  dashboard and /metrics</text>
+
+  <path d="M150,205 L196,205" fill="none" stroke="#495057" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M370,205 L466,205" fill="none" stroke="#495057" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="418" y="226" text-anchor="middle" class="l" fill="#e8590c">miss</text>
+  <path d="M370,190 C420,190 420,75 466,75" fill="none" stroke="#495057" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="434" y="138" class="l" fill="#2b8a3e">hit</text>
+  <path d="M670,195 C705,195 705,160 736,160" fill="none" stroke="#495057" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="680" y="150" class="l" fill="#364fc7">easy</text>
+  <path d="M670,215 C705,215 705,260 736,260" fill="none" stroke="#495057" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="680" y="286" class="l" fill="#d9480f">hard</text>
+
+  <path d="M835,228 L835,194" fill="none" stroke="#868e96" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrow)"/>
+  <text x="845" y="214" class="n">fallback if large fails</text>
+
+  <path d="M670,75 L965,75 L965,375 L934,375" fill="none" stroke="#868e96" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M930,160 L965,160" fill="none" stroke="#868e96" stroke-width="2"/>
+  <path d="M930,260 L965,260" fill="none" stroke="#868e96" stroke-width="2"/>
+
+  <text x="20" y="428" class="n">Latencies measured on a live demo run with synthetic traffic.</text>
+</svg>

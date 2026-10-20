@@ -20,32 +20,30 @@ A RAG product is affordable at scale only if you stop paying the large model for
 
 ## Architecture
 
-```mermaid
-flowchart LR
-    C["Client / RAG app"] -->|POST /v1/query| G["FastAPI gateway"]
-    G --> E["Embedder<br/>MiniLM, CPU"]
-    E --> K{"Semantic cache<br/>namespace + lexical guard"}
-    K -- hit --> R["Response"]
-    K -- miss --> RT["Router<br/>complexity score"]
-    RT -- easy --> S["Small model<br/>gpt-oss-20b"]
-    RT -- hard --> L["Large model<br/>gpt-oss-120b"]
-    L -. "transient failure" .-> S
-    S --> ST["Store in cache"]
-    L --> ST
-    ST --> R
-    G --> T[("SQLite tracker")]
-    T --> D["Streamlit dashboard"]
-    T -. "cost pressure" .-> RT
-    G --> M["/metrics Prometheus"]
-```
+Every question takes one of three paths: **cache**, **small model**, or **large model**. Repeat questions and easy questions never reach the expensive model.
 
-Request flow:
+![RouteWise architecture](docs/images/architecture.svg)
 
-1. Embed the query (one embedding per request).
-2. Look up the semantic cache inside the request's namespace. A candidate above the similarity threshold must also pass a lexical guard.
-3. On a miss, score query complexity and route to the small or large model.
-4. If the large model fails with a transient error, fall back to the small model (marked `degraded`, never cached).
-5. Cache the answer, record tokens, cost, and latency, update Prometheus metrics.
+| Path | When | Typical latency* | Relative cost |
+|---|---|---|---|
+| Cache hit | A similar question was answered before | ~10 ms | free |
+| Small model | Easy question | ~1.2 s | 1x |
+| Large model | Hard question | ~4.4 s | ~2x |
+
+<sub>*Measured on a live demo run with synthetic traffic. Cost ratio uses the reference prices in config.</sub>
+
+<details>
+<summary>How one request flows, step by step</summary>
+
+1. The question is turned into a vector.
+2. The cache looks for a similar earlier question in the same namespace. A match must also pass a safety check on numbers, negations, and word order.
+3. On a miss, the router scores how hard the question is and picks a model.
+4. If the large model fails, the small model answers instead. That answer is marked degraded and never cached.
+5. The answer is cached. Tokens, cost, and latency are recorded for the dashboard and Prometheus.
+
+</details>
+
+More diagrams (sequence, decisions, failure handling, data model): [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 
 ## Design decisions
 
