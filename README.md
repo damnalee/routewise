@@ -6,6 +6,10 @@
 
 **An LLM gateway that sits in front of RAG apps. It answers repeat questions from a semantic cache, sends easy questions to a small model and hard ones to a large model, and tracks cost and latency per request.**
 
+![Dashboard](docs/dashboard.png)
+
+*Dashboard during a demo run on synthetic traffic.*
+
 
 
 ## Why
