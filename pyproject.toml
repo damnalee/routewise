@@ -42,6 +42,9 @@ target-version = "py311"
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]
 
+[tool.ruff.lint.isort]
+known-first-party = ["routewise"]
+
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
@@ -50,3 +53,11 @@ testpaths = ["tests"]
 python_version = "3.11"
 strict = true
 ignore_missing_imports = true
+files = ["src/routewise"]
+
+[tool.coverage.run]
+source = ["routewise"]
+omit = ["*/routewise/dashboard.py"]
+
+[tool.coverage.report]
+exclude_lines = ["pragma: no cover", "if __name__ == .__main__.:"]

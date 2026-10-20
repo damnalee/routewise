@@ -227,4 +227,6 @@ def test_settings_parse_keys_and_factory_picks_provider() -> None:
     settings = Settings(_env_file=None, groq_api_keys=" a, b ,,c")
     assert settings.groq_keys == ["a", "b", "c"]
     assert isinstance(build_llm_client(settings), GroqClient)
-    assert isinstance(build_llm_client(Settings(_env_file=None, llm_provider="ollama")), OllamaClient)
+    assert isinstance(
+        build_llm_client(Settings(_env_file=None, llm_provider="ollama")), OllamaClient
+    )

@@ -75,9 +75,7 @@ def create_app(gateway: Gateway, settings: Settings) -> FastAPI:
         response.headers["X-Request-ID"] = request_id
         return response
 
-    @app.post(
-        "/v1/query", response_model=QueryResponse, dependencies=[Depends(require_api_key)]
-    )
+    @app.post("/v1/query", response_model=QueryResponse, dependencies=[Depends(require_api_key)])
     async def query(req: QueryRequest) -> QueryResponse:
         return await gateway.answer(req)
 

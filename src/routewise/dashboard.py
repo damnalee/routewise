@@ -10,6 +10,7 @@ it is reachable.
 
 from __future__ import annotations
 
+import os
 import time
 from datetime import datetime
 from typing import Any
@@ -124,7 +125,10 @@ def main() -> None:
         auto = st.checkbox("Auto-refresh", value=True)
         interval = st.slider("Refresh every (s)", 2, 60, 5, disabled=not auto)
         st.header("Gateway")
-        gateway_url = st.text_input("Gateway URL", "http://localhost:8000")
+        gateway_url = st.text_input(
+            "Gateway URL",
+            os.environ.get("ROUTEWISE_DASHBOARD_GATEWAY_URL", "http://localhost:8000"),
+        )
         st.button("Refresh now")
 
     window_s = WINDOWS[label]

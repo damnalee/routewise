@@ -30,9 +30,9 @@ class Settings(BaseSettings):
     llm_provider: Literal["ollama", "groq"] = "groq"
     small_model: str = "openai/gpt-oss-20b"
     large_model: str = "openai/gpt-oss-120b"
-    request_timeout_s: float = Field(60.0, gt=0)
-    llm_max_retries: int = Field(2, ge=0, le=10)
-    llm_retry_backoff_s: float = Field(0.5, ge=0)
+    request_timeout_s: float = Field(default=60.0, gt=0)
+    llm_max_retries: int = Field(default=2, ge=0, le=10)
+    llm_retry_backoff_s: float = Field(default=0.5, ge=0)
 
     # Ollama (local)
     llm_base_url: str = "http://localhost:11434"
@@ -46,20 +46,20 @@ class Settings(BaseSettings):
     embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2"
     # cpu is the safe default: torch on Apple MPS crashed under concurrent requests.
     embedding_device: Literal["auto", "cpu", "mps"] = "cpu"
-    cache_similarity_threshold: float = Field(0.85, ge=0.0, le=1.0)
-    cache_ttl_s: int = Field(86_400, gt=0)
-    cache_max_entries: int = Field(10_000, gt=0)
+    cache_similarity_threshold: float = Field(default=0.85, ge=0.0, le=1.0)
+    cache_ttl_s: int = Field(default=86_400, gt=0)
+    cache_max_entries: int = Field(default=10_000, gt=0)
 
     # --- routing ---
     # Queries scoring >= router_threshold go to the large model.
-    router_threshold: float = Field(0.30, ge=0.0, le=1.0)
+    router_threshold: float = Field(default=0.30, ge=0.0, le=1.0)
     # Max amount the threshold is raised under full budget pressure, see Router.
-    router_pressure_weight: float = Field(0.20, ge=0.0, le=1.0)
+    router_pressure_weight: float = Field(default=0.20, ge=0.0, le=1.0)
 
     # --- cost budget ---
     # cost_pressure = spend in the last budget_window_s divided by budget_usd, clamped to [0, 1].
-    budget_usd: float = Field(1.0, gt=0)
-    budget_window_s: int = Field(3600, gt=0)
+    budget_usd: float = Field(default=1.0, gt=0)
+    budget_window_s: int = Field(default=3600, gt=0)
 
     # --- storage ---
     db_path: Path = Path("data/routewise.db")

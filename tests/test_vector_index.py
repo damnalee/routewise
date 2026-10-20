@@ -20,7 +20,9 @@ def test_exact_match_scores_one() -> None:
 
 def test_returns_best_match_first_and_respects_k() -> None:
     idx, emb = make_index()
-    ids = [idx.add(emb.embed_one(t)) for t in ["red apple pie", "blue ocean wave", "red apple tart"]]
+    ids = [
+        idx.add(emb.embed_one(t)) for t in ["red apple pie", "blue ocean wave", "red apple tart"]
+    ]
     hits = idx.search(emb.embed_one("red apple pie"), k=2)
     assert [h.id for h in hits][0] == ids[0]
     assert len(hits) == 2

@@ -19,11 +19,15 @@ import re
 import threading
 from abc import ABC, abstractmethod
 from collections.abc import Sequence
+from typing import TYPE_CHECKING
 
 import numpy as np
 from numpy.typing import NDArray
 
 from routewise.logging import get_logger
+
+if TYPE_CHECKING:
+    from sentence_transformers import SentenceTransformer
 
 log = get_logger(__name__)
 
@@ -33,7 +37,8 @@ FloatArray = NDArray[np.float32]
 def l2_normalize(x: FloatArray) -> FloatArray:
     """Row-wise L2 normalisation so dot product equals cosine similarity."""
     norms = np.linalg.norm(x, axis=-1, keepdims=True)
-    return (x / np.maximum(norms, 1e-12)).astype(np.float32, copy=False)
+    result: FloatArray = (x / np.maximum(norms, 1e-12)).astype(np.float32, copy=False)
+    return result
 
 
 class Embedder(ABC):
@@ -52,7 +57,8 @@ class Embedder(ABC):
         return await asyncio.to_thread(self.embed, texts)
 
     def embed_one(self, text: str) -> FloatArray:
-        return self.embed([text])[0]
+        vector: FloatArray = self.embed([text])[0]
+        return vector
 
 
 class SentenceTransformerEmbedder(Embedder):
@@ -64,7 +70,7 @@ class SentenceTransformerEmbedder(Embedder):
         self._model_name = model_name
         self._batch_size = batch_size
         self._device = device
-        self._model = None  # type: ignore[var-annotated]
+        self._model: SentenceTransformer | None = None
         self._load_lock = threading.Lock()
         self._encode_lock = threading.Lock()
 
@@ -75,21 +81,32 @@ class SentenceTransformerEmbedder(Embedder):
 
         return "mps" if torch.backends.mps.is_available() else "cpu"
 
-    def _load(self):  # type: ignore[no-untyped-def]
-        if self._model is None:
+    def _load(self) -> SentenceTransformer:
+        model = self._model
+        if model is None:
             with self._load_lock:
-                if self._model is None:
+                model = self._model
+                if model is None:
                     os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
-                    from sentence_transformers import SentenceTransformer
+                    from sentence_transformers import SentenceTransformer as _Model
 
                     device = self._resolve_device()
                     log.info("embedder.loading", model=self._model_name, device=device)
-                    self._model = SentenceTransformer(self._model_name, device=device)
-        return self._model
+                    model = _Model(self._model_name, device=device)
+                    self._model = model
+        return model
 
     @property
     def dim(self) -> int:
-        return int(self._load().get_sentence_embedding_dimension())
+        model = self._load()
+        # Newer sentence-transformers renamed this method. Support both names.
+        getter = getattr(model, "get_embedding_dimension", None)
+        if getter is None:
+            getter = model.get_sentence_embedding_dimension
+        value = getter()
+        if value is None:
+            raise RuntimeError(f"model {self._model_name!r} does not report an output dimension")
+        return int(value)
 
     def embed(self, texts: Sequence[str]) -> FloatArray:
         model = self._load()

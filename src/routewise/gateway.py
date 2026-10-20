@@ -28,7 +28,7 @@ from routewise.llm import (
     estimate_tokens,
 )
 from routewise.llm_factory import build_llm_client
-from routewise.llm_groq import LLMAuthError, LLMRateLimitError
+from routewise.llm_groq import LLMRateLimitError
 from routewise.logging import get_logger
 from routewise.metrics import Metrics
 from routewise.query_guard import queries_compatible
@@ -106,7 +106,9 @@ class Gateway:
     @classmethod
     def build(cls, settings: Settings) -> Gateway:
         """Wire the production components from settings."""
-        embedder = SentenceTransformerEmbedder(settings.embedding_model, device=settings.embedding_device)
+        embedder = SentenceTransformerEmbedder(
+            settings.embedding_model, device=settings.embedding_device
+        )
         cache = SemanticCache(
             dim=embedder.dim,  # loads the embedding model once, at startup
             threshold=settings.cache_similarity_threshold,

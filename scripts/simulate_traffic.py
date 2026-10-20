@@ -164,7 +164,9 @@ async def run(args: argparse.Namespace) -> int:
     for source, count in counts.most_common():
         avg = sum(latency[source]) / len(latency[source])
         print(f"  {source:28s} {count:4d}   avg {avg:8.0f} ms")
-    print(f"\nSpend ${sum(r.cost for r in results):.4f}   saved ${sum(r.saved for r in results):.4f}")
+    print(
+        f"\nSpend ${sum(r.cost for r in results):.4f}   saved ${sum(r.saved for r in results):.4f}"
+    )
     print("Open the dashboard: python -m streamlit run src/routewise/dashboard.py")
     return 0
 

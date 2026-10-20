@@ -100,10 +100,7 @@ class VectorIndex:
             scores = self._matrix[:n] @ q
             scores = np.where(self._active[:n], scores, -np.inf)
             k = min(k, len(self._id_to_slot))
-            if k < n:
-                top = np.argpartition(-scores, k - 1)[:k]
-            else:
-                top = np.arange(n)
+            top = np.argpartition(-scores, k - 1)[:k] if k < n else np.arange(n)
             top = top[np.argsort(-scores[top])]
             hits = [
                 SearchHit(self._slot_to_id[int(s)], float(scores[s]))

@@ -27,9 +27,7 @@ def ok_body(text: str = "hi", tokens_in: int = 12, tokens_out: int = 5) -> dict[
     }
 
 
-def make_client(
-    handler: Any, max_retries: int = 2
-) -> tuple[OllamaClient, list[float]]:
+def make_client(handler: Any, max_retries: int = 2) -> tuple[OllamaClient, list[float]]:
     sleeps: list[float] = []
 
     async def fake_sleep(seconds: float) -> None:
@@ -189,7 +187,9 @@ async def test_invalid_requests_are_rejected() -> None:
 async def test_healthy_and_available_models() -> None:
     def handler(request: httpx.Request) -> httpx.Response:
         assert request.url.path == "/api/tags"
-        return httpx.Response(200, json={"models": [{"name": "llama3.2:3b"}, {"name": "qwen2.5:7b"}]})
+        return httpx.Response(
+            200, json={"models": [{"name": "llama3.2:3b"}, {"name": "qwen2.5:7b"}]}
+        )
 
     client, _ = make_client(handler)
     assert await client.healthy() is True

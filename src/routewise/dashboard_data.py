@@ -95,7 +95,9 @@ def outcome_frame(summary: dict[str, Any]) -> pd.DataFrame:
         "large": summary["large"],
         "error": summary["errors"],
     }
-    return pd.DataFrame({"outcome": list(OUTCOME_ORDER), "requests": [counts[o] for o in OUTCOME_ORDER]})
+    return pd.DataFrame(
+        {"outcome": list(OUTCOME_ORDER), "requests": [counts[o] for o in OUTCOME_ORDER]}
+    )
 
 
 def latency_frame(summary: dict[str, Any]) -> pd.DataFrame:
